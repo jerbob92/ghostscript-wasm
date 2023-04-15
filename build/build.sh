@@ -21,6 +21,10 @@ cd "$ROOT/lib/ghostscript"
 # There is a bug in this version of Ghostscript that prevents passing in gcc to compile the build tools, replace the var manually.
 sed -i "s/CCAUX=@CC@/CCAUX=gcc/g" base/Makefile.in
 
+# @TODO: set the proper directory of the resources in the build wasm.
+# @TODO: copy the resources directory of the build outside the build.
+# @TODO: mount the resources directory in a virtual embedfs filesystem in Wazero in the Go binary.
+
 emconfigure ./autogen.sh \
   CFLAGSAUX= CPPFLAGSAUX= \
   --host="wasm32-unknown-linux" \
