@@ -1,0 +1,3 @@
+[submodule "build/lib/ghostscript"]
+	path = build/lib/ghostscript
+	url = https://github.com/rsc/ghostscript-9.06.git
