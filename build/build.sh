@@ -32,8 +32,6 @@ emconfigure ./autogen.sh \
 
 export GS_LDFLAGS="\
 -s ALLOW_MEMORY_GROWTH=1 \
--s MODULARIZE=1 \
--static \
 -s WASM=1 \
 -s ALLOW_MEMORY_GROWTH=1 \
 -s STANDALONE_WASM=1 \
