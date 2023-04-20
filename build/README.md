@@ -29,8 +29,16 @@ patch -p1 < ../../../emscripten.patch
 # Go back to the root of the build dir
 cd ../../../
 
+# Create the prefix directory (I couldn't make this work by just setting the prefix in the compiled binary)
+sudo mkdir -p /ghostscript
+sudo chmod 777 /ghostscript
+
 # Run the build script
 ./build.sh
 
 # Copy the generated binaries into the wasm folder of the repository.
 cp lib/ghostscript/bin/gs.wasm ../wasm
+rm -Rf ../ghostscript
+cp -R /ghostscript ../ghostscript
+sudo rm -Rf /ghostscript
+

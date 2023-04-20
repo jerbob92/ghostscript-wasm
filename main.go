@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"crypto/rand"
+	"embed"
 	_ "embed"
 	"fmt"
 	"log"
@@ -10,16 +11,18 @@ import (
 	"path/filepath"
 	"runtime"
 
-        "github.com/jerbob92/ghostscript-wasm/imports"
-
-        "github.com/tetratelabs/wazero"
-        "github.com/tetratelabs/wazero/experimental"
-        "github.com/tetratelabs/wazero/experimental/logging"
-        "github.com/tetratelabs/wazero/imports/wasi_snapshot_preview1"
+	"github.com/tetratelabs/wazero"
+	"github.com/tetratelabs/wazero/experimental"
+	"github.com/tetratelabs/wazero/experimental/emscripten"
+	"github.com/tetratelabs/wazero/experimental/logging"
+	"github.com/tetratelabs/wazero/imports/wasi_snapshot_preview1"
 )
 
 //go:embed wasm/gs.wasm
 var gsWasm []byte
+
+//go:embed ghostscript
+var sharedFiles embed.FS
 
 func main() {
 	ctx := context.WithValue(context.Background(), experimental.FunctionListenerFactoryKey{}, logging.NewLoggingListenerFactory(os.Stdout))
@@ -42,11 +45,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	if _, err := imports.Instantiate(ctx, wazeroRuntime); err != nil {
+	if _, err := emscripten.InstantiateForModule(ctx, wazeroRuntime, compiledModule); err != nil {
 		log.Fatal(err)
 	}
 
 	fsConfig := wazero.NewFSConfig()
+	fsConfig = fsConfig.WithFSMount(sharedFiles, "/ghostscript")
 
 	// On Windows we mount the volume of the current working directory as
 	// root. On Linux we mount / as root.
