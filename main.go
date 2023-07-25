@@ -13,8 +13,8 @@ import (
 
 	"github.com/tetratelabs/wazero"
 	"github.com/tetratelabs/wazero/experimental"
-	"github.com/tetratelabs/wazero/experimental/emscripten"
-	"github.com/tetratelabs/wazero/experimental/logging"
+        "github.com/tetratelabs/wazero/experimental/logging"
+	"github.com/tetratelabs/wazero/imports/emscripten"
 	"github.com/tetratelabs/wazero/imports/wasi_snapshot_preview1"
 )
 

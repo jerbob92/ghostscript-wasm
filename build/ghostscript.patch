@@ -1,0 +1,117 @@
+diff --git a/base/Makefile.in b/base/Makefile.in
+index de0f438..f6a4e8b 100644
+--- a/base/Makefile.in
++++ b/base/Makefile.in
+@@ -317,7 +317,7 @@ RANLIB=@RANLIB@
+ # Define the name of the C compiler (target and host (AUX))
+ 
+ CC=@CC@
+-CCAUX=@CC@
++CCAUX=gcc
+ 
+ # Define the name of the linker for the final link step.
+ # Normally this is the same as the C compiler.
+diff --git a/base/freetype.mak b/base/freetype.mak
+index 16f2b95..1e7932b 100644
+--- a/base/freetype.mak
++++ b/base/freetype.mak
+@@ -49,7 +49,10 @@ ft_autofit=\
+ 	$(FTOBJ)aflatin.$(OBJ) \
+ 	$(FTOBJ)afloader.$(OBJ) \
+ 	$(FTOBJ)afmodule.$(OBJ) \
+-	$(FTOBJ)afwarp.$(OBJ)
++	$(FTOBJ)afwarp.$(OBJ) \
++        $(FTOBJ)afranges.$(OBJ) \
++        $(FTOBJ)afblue.$(OBJ) \
++        $(FTOBJ)hbshim.$(OBJ)
+ 
+ ft_base=\
+ 	$(FTOBJ)ftadvanc.$(OBJ) \
+@@ -80,7 +83,7 @@ ft_base=\
+ 	$(FTOBJ)ftsystem.$(OBJ) \
+ 	$(FTOBJ)fttype1.$(OBJ) \
+ 	$(FTOBJ)ftwinfnt.$(OBJ) \
+-	$(FTOBJ)ftxf86.$(OBJ) \
++	$(FTOBJ)ftfntfmt.$(OBJ) \
+ 	$(FTOBJ)ftpatent.$(OBJ)
+ 
+ ft_bdf=\
+@@ -103,7 +106,16 @@ ft_cff=\
+ 	$(FTOBJ)cffgload.$(OBJ) \
+ 	$(FTOBJ)cffparse.$(OBJ) \
+ 	$(FTOBJ)cffcmap.$(OBJ) \
+-	$(FTOBJ)cffdrivr.$(OBJ)
++	$(FTOBJ)cffdrivr.$(OBJ) \
++        $(FTOBJ)cf2ft.$(OBJ) \
++        $(FTOBJ)cf2font.$(OBJ) \
++        $(FTOBJ)cf2blues.$(OBJ) \
++        $(FTOBJ)cf2intrp.$(OBJ) \
++        $(FTOBJ)cf2error.$(OBJ) \
++        $(FTOBJ)cf2stack.$(OBJ) \
++        $(FTOBJ)cf2read.$(OBJ) \
++        $(FTOBJ)cf2hints.$(OBJ) \
++        $(FTOBJ)cf2arrst.$(OBJ)
+ 
+ ft_cid=\
+ 	$(FTOBJ)cidparse.$(OBJ) \
+@@ -261,6 +273,15 @@ $(FTOBJ)afmodule.$(OBJ) : $(FTSRC)autofit$(D)afmodule.c
+ $(FTOBJ)afwarp.$(OBJ) : $(FTSRC)autofit$(D)afwarp.c
+ 	$(FTCC) $(FTO_)afwarp.$(OBJ) $(C_) $(FTSRC)autofit$(D)afwarp.c
+ 
++$(FTOBJ)afranges.$(OBJ) : $(FTSRC)autofit$(D)afranges.c
++	$(FTCC) $(FTO_)afranges.$(OBJ) $(C_) $(FTSRC)autofit$(D)afranges.c
++
++$(FTOBJ)afblue.$(OBJ) : $(FTSRC)autofit$(D)afblue.c
++	$(FTCC) $(FTO_)afblue.$(OBJ) $(C_) $(FTSRC)autofit$(D)afblue.c
++
++$(FTOBJ)hbshim.$(OBJ) : $(FTSRC)autofit$(D)hbshim.c
++	$(FTCC) $(FTO_)hbshim.$(OBJ) $(C_) $(FTSRC)autofit$(D)hbshim.c
++
+ 
+ $(FTOBJ)ftadvanc.$(OBJ) : $(FTSRC)base$(D)ftadvanc.c
+ 	$(FTCC) $(FTO_)ftadvanc.$(OBJ) $(C_) $(FTSRC)base$(D)ftadvanc.c
+@@ -346,8 +367,8 @@ $(FTOBJ)fttype1.$(OBJ) : $(FTSRC)base$(D)fttype1.c
+ $(FTOBJ)ftwinfnt.$(OBJ) : $(FTSRC)base$(D)ftwinfnt.c
+ 	$(FTCC) $(FTO_)ftwinfnt.$(OBJ) $(C_) $(FTSRC)base$(D)ftwinfnt.c
+ 
+-$(FTOBJ)ftxf86.$(OBJ) : $(FTSRC)base$(D)ftxf86.c
+-	$(FTCC) $(FTO_)ftxf86.$(OBJ) $(C_) $(FTSRC)base$(D)ftxf86.c
++$(FTOBJ)ftfntfmt.$(OBJ) : $(FTSRC)base$(D)ftfntfmt.c
++	$(FTCC) $(FTO_)ftfntfmt.$(OBJ) $(C_) $(FTSRC)base$(D)ftfntfmt.c
+ 
+ $(FTOBJ)ftpatent.$(OBJ) : $(FTSRC)base$(D)ftpatent.c
+ 	$(FTCC) $(FTO_)ftpatent.$(OBJ) $(C_) $(FTSRC)base$(D)ftpatent.c
+@@ -400,6 +421,33 @@ $(FTOBJ)cffcmap.$(OBJ) : $(FTSRC)cff$(D)cffcmap.c
+ $(FTOBJ)cffdrivr.$(OBJ) : $(FTSRC)cff$(D)cffdrivr.c
+ 	$(FTCC) $(FTO_)cffdrivr.$(OBJ) $(C_) $(FTSRC)cff$(D)cffdrivr.c
+ 
++$(FTOBJ)cf2ft.$(OBJ) : $(FTSRC)cff$(D)cf2ft.c
++	$(FTCC) $(FTO_)cf2ft.$(OBJ) $(C_) $(FTSRC)cff$(D)cf2ft.c
++
++$(FTOBJ)cf2font.$(OBJ) : $(FTSRC)cff$(D)cf2font.c
++	$(FTCC) $(FTO_)cf2font.$(OBJ) $(C_) $(FTSRC)cff$(D)cf2font.c
++
++$(FTOBJ)cf2blues.$(OBJ) : $(FTSRC)cff$(D)cf2blues.c
++	$(FTCC) $(FTO_)cf2blues.$(OBJ) $(C_) $(FTSRC)cff$(D)cf2blues.c
++
++$(FTOBJ)cf2intrp.$(OBJ) : $(FTSRC)cff$(D)cf2intrp.c
++	$(FTCC) $(FTO_)cf2intrp.$(OBJ) $(C_) $(FTSRC)cff$(D)cf2intrp.c
++
++$(FTOBJ)cf2error.$(OBJ) : $(FTSRC)cff$(D)cf2error.c
++	$(FTCC) $(FTO_)cf2error.$(OBJ) $(C_) $(FTSRC)cff$(D)cf2error.c
++
++$(FTOBJ)cf2stack.$(OBJ) : $(FTSRC)cff$(D)cf2stack.c
++	$(FTCC) $(FTO_)cf2stack.$(OBJ) $(C_) $(FTSRC)cff$(D)cf2stack.c
++
++$(FTOBJ)cf2arrst.$(OBJ) : $(FTSRC)cff$(D)cf2arrst.c
++	$(FTCC) $(FTO_)cf2arrst.$(OBJ) $(C_) $(FTSRC)cff$(D)cf2arrst.c
++
++$(FTOBJ)cf2read.$(OBJ) : $(FTSRC)cff$(D)cf2read.c
++	$(FTCC) $(FTO_)cf2read.$(OBJ) $(C_) $(FTSRC)cff$(D)cf2read.c
++
++$(FTOBJ)cf2hints.$(OBJ) : $(FTSRC)cff$(D)cf2hints.c
++	$(FTCC) $(FTO_)cf2hints.$(OBJ) $(C_) $(FTSRC)cff$(D)cf2hints.c
++
+ $(FTOBJ)cidparse.$(OBJ) : $(FTSRC)cid$(D)cidparse.c
+ 	$(FTCC) $(FTO_)cidparse.$(OBJ) $(C_) $(FTSRC)cid$(D)cidparse.c
+

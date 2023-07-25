@@ -38,6 +38,7 @@ export GS_LDFLAGS="\
 -s STANDALONE_WASM=1 \
 -sERROR_ON_UNDEFINED_SYMBOLS=0 \
 -s USE_ZLIB=1 \
+-s WASM_BIGINT=1 \
 -g \
 --profile"
 

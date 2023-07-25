@@ -1,6 +1,13 @@
-Get the emsdk repo
+# Make sure the ghostscript submodule is loaded
+git submodule update --init --recursive
 
-`git clone https://github.com/emscripten-core/emsdk.git`
+# Patch the ghostscript submodule
+cd lib/ghostscript
+git apply ../../ghostscript.patch
+cd ../..
+
+# Get the emsdk repo
+git clone https://github.com/emscripten-core/emsdk.git
 
 # Enter that directory
 cd emsdk
@@ -8,14 +15,23 @@ cd emsdk
 # Fetch the latest version of the emsdk (not needed the first time you clone)
 git pull
 
-# Download and install the latest SDK tools.
-./emsdk install latest
+# Checkout the correct version
+git checkout 3.1.44
 
-# Make the "latest" SDK "active" for the current user. (writes .emscripten file)
-./emsdk activate latest
+# Download and install the SDK tools.
+./emsdk install 3.1.44
+
+# Make the SDK version active for the current user. (writes .emscripten file)
+./emsdk activate 3.1.44
 
 # Activate PATH and other environment variables in the current terminal
 source ./emsdk_env.sh
+
+# Build the Emscripten freetype version and copy it into ghostscript
+embuilder build freetype
+rm -Rf ../lib/ghostscript/freetype
+mkdir ../lib/ghostscript/freetype
+cp -R upstream/emscripten/cache/ports/freetype/FreeType-version_1/* ../lib/ghostscript/freetype
 
 # Go to the emscripten directory
 cd upstream/emscripten
