@@ -13,7 +13,7 @@ import (
 
 	"github.com/tetratelabs/wazero"
 	"github.com/tetratelabs/wazero/experimental"
-        "github.com/tetratelabs/wazero/experimental/logging"
+	"github.com/tetratelabs/wazero/experimental/logging"
 	"github.com/tetratelabs/wazero/imports/emscripten"
 	"github.com/tetratelabs/wazero/imports/wasi_snapshot_preview1"
 )
@@ -78,7 +78,10 @@ func main() {
 		WithRandSource(rand.Reader).
 		WithFSConfig(fsConfig).
 		WithName("").
-		WithArgs(args...)
+		WithArgs(args...).
+		WithSysWalltime(). // Real clocks is needed to generate correct (non-duplicate) tmp file names.
+		WithSysNanotime().
+		WithSysNanosleep()
 
 	_, err = wazeroRuntime.InstantiateModule(ctx, compiledModule, moduleConfig)
 	if err != nil {
