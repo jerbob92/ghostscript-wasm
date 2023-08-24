@@ -28,7 +28,7 @@ func main() {
 	ctx := context.WithValue(context.Background(), experimental.FunctionListenerFactoryKey{}, logging.NewLoggingListenerFactory(os.Stdout))
 	ctx = context.Background() // Comment this line to get debug information.
 
-	runtimeConfig := wazero.NewRuntimeConfigInterpreter()
+	runtimeConfig := wazero.NewRuntimeConfig()
 	//cache, err := wazero.NewCompilationCacheWithDir(".wazero-cache")
 	//if err == nil {
 	//		runtimeConfig = runtimeConfig.WithCompilationCache(cache)
