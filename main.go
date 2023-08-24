@@ -75,6 +75,7 @@ func main() {
 		WithStartFunctions("_start").
 		WithStdout(os.Stdout).
 		WithStderr(os.Stderr).
+		WithStdin(os.Stdin).
 		WithRandSource(rand.Reader).
 		WithFSConfig(fsConfig).
 		WithName("").
