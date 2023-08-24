@@ -1072,6 +1072,10 @@ function dbg(text) {
       }
     };
 
+  var __emscripten_throw_longjmp = () => {
+      throw Infinity;
+    };
+
   var stringToAscii = (str, buffer) => {
       for (var i = 0; i < str.length; ++i) {
         assert(str.charCodeAt(i) === (str.charCodeAt(i) & 0xff));
@@ -4392,6 +4396,7 @@ function checkIncomingModuleAPI() {
   ignoredModuleProp('fetchSettings');
 }
 var wasmImports = {
+  _emscripten_throw_longjmp: __emscripten_throw_longjmp,
   args_get: _args_get,
   args_sizes_get: _args_sizes_get,
   clock_time_get: _clock_time_get,
@@ -4433,6 +4438,7 @@ var wasmImports = {
 var asm = createWasm();
 var ___errno_location = createExportWrapper('__errno_location');
 var __start = Module['__start'] = createExportWrapper('_start');
+var _setThrew = createExportWrapper('setThrew');
 var _emscripten_stack_init = () => (_emscripten_stack_init = wasmExports['emscripten_stack_init'])();
 var _emscripten_stack_get_free = () => (_emscripten_stack_get_free = wasmExports['emscripten_stack_get_free'])();
 var _emscripten_stack_get_base = () => (_emscripten_stack_get_base = wasmExports['emscripten_stack_get_base'])();
